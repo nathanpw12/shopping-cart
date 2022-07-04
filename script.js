@@ -12,6 +12,28 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
+// const getSkuFromProductItem = (item) =>
+//   item.querySelector('span.item__sku').innerText;
+
+const cartItemClickListener = () => {};
+
+const createCartItemElement = ({ id: sku, title: name, price: salePrice }) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+};
+
+const cartItems = document.querySelector('.cart__items');
+
+async function itemID(event) {
+  const selectComputer = event.target.parentNode.firstChild.innerText;
+  const selectComputerResponse = await fetchItem(selectComputer);
+  const productID = createCartItemElement(selectComputerResponse);
+  return cartItems.appendChild(productID);
+}
+
 const createProductItemElement = ({
   id: sku,
   title: name,
@@ -23,9 +45,11 @@ const createProductItemElement = ({
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
-  section.appendChild(
-    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
-  );
+  section
+    .appendChild(
+      createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
+    )
+    .addEventListener('click', itemID);
 
   return section;
 };
@@ -39,20 +63,8 @@ const computersAPI = async () => {
   });
 };
 
-const getSkuFromProductItem = (item) =>
-  item.querySelector('span.item__sku').innerText;
-
-const cartItemClickListener = (event) => {
-  // coloque seu código aqui
-};
-
-const createCartItemElement = ({ sku, name, salePrice }) => {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
-};
+// const removeItemOnClick = () => {
+// };
 
 window.onload = () => {
   computersAPI();
