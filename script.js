@@ -79,7 +79,7 @@ const orginalCart = () => {
   const list = getSavedCartItems();
   cartItems.innerHTML = list;
 };
-
+//
 const delOriginalCart = () => {
   const cartItemsChilds = document.querySelector('.cart__items').childNodes;
   cartItemsChilds.forEach((element) => element.addEventListener('click', (event) => {
