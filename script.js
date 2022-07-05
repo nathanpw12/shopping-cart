@@ -1,4 +1,12 @@
 const cartItems = document.querySelector('.cart__items');
+const items = document.querySelector('.items'); 
+
+const loading = () => {
+  const element = document.createElement('div');
+  element.innerHTML = 'carregando...';
+  element.classList.add('loading');
+  items.appendChild(element);
+};
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -59,7 +67,9 @@ const createProductItemElement = ({
 };
 
 const computersAPI = async () => {
+  const loadingComputers = document.querySelector('.loading');
   const response = await fetchProducts('computer');
+  loadingComputers.remove();
   const elementHTML = document.querySelector('.items');
   response.results.forEach((computer) => {
     const append = createProductItemElement(computer);
@@ -89,6 +99,7 @@ const delOriginalCart = () => {
 };
 
 window.onload = () => {
+  loading();
   computersAPI();
   itemRemove();
   orginalCart();
