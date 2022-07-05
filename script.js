@@ -34,8 +34,9 @@ const itemID = async (event) => {
   const selectComputer = event.target.parentNode.firstChild.innerText;
   const selectComputerResponse = await fetchItem(selectComputer);
   const productID = createCartItemElement(selectComputerResponse);
-  return cartItems.appendChild(productID);
-}
+  cartItems.appendChild(productID);
+  saveCartItems(cartItems.innerHTML);
+};
 
 const createProductItemElement = ({
   id: sku,
@@ -66,6 +67,30 @@ const computersAPI = async () => {
   });
 };
 
+const itemRemove = () => {
+  const itemRemoveBtn = document.querySelector('.empty-cart');
+  itemRemoveBtn.addEventListener('click', () => {
+    cartItems.innerHTML = ' ';
+    localStorage.clear();
+  });
+};
+
+const orginalCart = () => {
+  const list = getSavedCartItems();
+  cartItems.innerHTML = list;
+};
+
+const delOriginalCart = () => {
+  const cartItemsChilds = document.querySelector('.cart__items').childNodes;
+  cartItemsChilds.forEach((element) => element.addEventListener('click', (event) => {
+    event.target.remove();
+    saveCartItems(cartItems.innerHTML);
+  }));
+};
+
 window.onload = () => {
   computersAPI();
+  itemRemove();
+  orginalCart();
+  delOriginalCart();
 };
